@@ -4,25 +4,22 @@ import Layout from '../components/Layout';
 import { Form, Formik } from 'formik';
 import Button from '../components/Button';
 import { useIntl } from 'react-intl';
-import { capitalize, capitalizeAll } from '../helpers/functions';
 
-const LoginPage: NextPage<{}> = () => {
+const HomePage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl();
   return (
     <Layout>
       <Formik
         initialValues={{
-          email: '',
-          password: '',
+          code: '',
         }}
         onSubmit={() => {}}
       >
         {() => (
           <Form>
-            <Input name="email" type="email" placeholder={capitalize(f({ id: 'login.email' }))} className="mb-3" />
-            <Input name="password" type="password" placeholder={capitalize(f({ id: 'login.password' }))} />
-            <Button type="submit" className="mt-20">
-              {f({ id: 'login.login' }).toUpperCase()}
+            <Input name="email" type="email" placeholder={f({ id: 'home.code' })} />
+            <Button type="submit" className="mt-10">
+              {f({ id: 'home.findPath' })}
             </Button>
           </Form>
         )}
@@ -31,4 +28,4 @@ const LoginPage: NextPage<{}> = () => {
   );
 };
 
-export default LoginPage;
+export default HomePage;

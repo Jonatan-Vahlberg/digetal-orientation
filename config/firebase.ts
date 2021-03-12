@@ -1,19 +1,21 @@
 import firebase from 'firebase';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBUyfI6mGxp-CCMQ4dHkwXZQ1MmZdBuflk',
+  apiKey: process.env.NEXT_PUBLIC_FB_API,
   authDomain: 'digital-orientation.firebaseapp.com',
   projectId: 'digital-orientation',
   storageBucket: 'digital-orientation.appspot.com',
   messagingSenderId: '724819056475',
-  appId: '1:724819056475:web:2c3a08d6cd48bd11cd2c7e',
+  appId: process.env.NEXT_PUBLIC_FB_APP_ID,
   measurementId: 'G-CRF3Z66TN5',
 };
 
 try {
   firebase.initializeApp(firebaseConfig);
+  console.log('FIREBASE_INITALIZED', process.env.NEXT_PUBLIC_FB_API);
 } catch (err) {
   if (!/already exists/.test(err.message)) {
+    console.log('FIREBASE ALREADY INITALIZED');
   }
 }
 
