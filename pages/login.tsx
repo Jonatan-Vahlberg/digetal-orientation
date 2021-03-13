@@ -6,12 +6,27 @@ import Button from '../components/Button';
 import { useIntl } from 'react-intl';
 import { capitalize, capitalizeAll } from '../helpers/functions';
 import { observer, Observer } from 'mobx-react-lite';
-import { useUserStore } from '../helpers/stores';
+import { useLocationStore, useUserStore } from '../helpers/stores';
+import { useEffect } from 'react';
 
 const LoginPage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl();
   const userStore = useUserStore();
-  console.log(userStore);
+  const locationStore = useLocationStore();
+  useEffect(() => {
+    if (navigator) {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.watchPosition((position) => {
+          const { latitude, longitude } = position.coords;
+          locationStore.setCoordinates([latitude, longitude]);
+        });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('COORDS', locationStore.coordinates);
+  }, [locationStore.coordinates]);
   return (
     <Layout>
       <Formik
@@ -28,6 +43,9 @@ const LoginPage: NextPage<{}> = () => {
             <Button type="submit" className="mt-20">
               {f({ id: 'login.login' }).toUpperCase()}
             </Button>
+
+            <p className="text-white">YOU ARE INSIDE {locationStore.isInPolygon() ? 'TRUE' : 'FALSE'}</p>
+            <p className="text-white">{locationStore.coordinates.join(' ')}</p>
           </Form>
         )}
       </Formik>
