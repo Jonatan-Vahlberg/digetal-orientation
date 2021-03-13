@@ -5,9 +5,13 @@ import { Form, Formik } from 'formik';
 import Button from '../components/Button';
 import { useIntl } from 'react-intl';
 import { capitalize, capitalizeAll } from '../helpers/functions';
+import { observer, Observer } from 'mobx-react-lite';
+import { useUserStore } from '../helpers/stores';
 
 const LoginPage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl();
+  const userStore = useUserStore();
+  console.log(userStore);
   return (
     <Layout>
       <Formik
@@ -31,4 +35,4 @@ const LoginPage: NextPage<{}> = () => {
   );
 };
 
-export default LoginPage;
+export default observer(LoginPage);
