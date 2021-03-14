@@ -1,11 +1,15 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from 'mobx'
 
 class UserStore {
-  user?: User;
+  user?: User
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this)
+  }
+
+  setUser(user?: User) {
+    this.user = user
   }
 }
 
-export default UserStore;
+export default UserStore
