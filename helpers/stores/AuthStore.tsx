@@ -1,5 +1,8 @@
 import { makeAutoObservable } from 'mobx'
-import Firebase from '../../config/firebase'
+import firebase from 'firebase/app'
+import firebaseClient from '../../config/firebase'
+import nookies from 'nookies'
+import 'firebase/auth'
 
 type RegisterDetails = {
   email: string
@@ -11,6 +14,15 @@ type RegisterDetails = {
 class AuthStore {
   constructor() {
     makeAutoObservable(this)
+    firebaseClient()
+    firebase.auth().onIdTokenChanged(async (user) => {
+      if (!user) {
+        nookies.set(undefined, 'FB_TOKEN', '', {})
+        return
+      }
+      const token = await user.getIdToken()
+      nookies.set(undefined, 'FB_TOKEN', token, {})
+    })
   }
 
   signUpUser(
@@ -18,7 +30,8 @@ class AuthStore {
     onComplete: (user: User) => void,
     onError: (error: any) => void
   ) {
-    Firebase.auth()
+    firebase
+      .auth()
       .createUserWithEmailAndPassword(details.email, details.password)
       .then((userCredentials) => {
         console.log('USER CRED', userCredentials)
@@ -28,7 +41,8 @@ class AuthStore {
           lastName: details.lastName,
           routes: [],
         }
-        Firebase.database()
+        firebase
+          .database()
           .ref(`users/${userCredentials.user.uid}`)
           .set(user, () => onComplete(user))
           .catch((error) => {
@@ -47,10 +61,12 @@ class AuthStore {
     onComplete: (user: User) => void,
     onError?: (error: any) => {}
   ) {
-    Firebase.auth()
+    firebase
+      .auth()
       .signInWithEmailAndPassword(details.email, details.password)
       .then((userCredentials) => {
-        Firebase.database()
+        firebase
+          .database()
           .ref(`users/${userCredentials.user.uid}`)
           .get()
           .then((userSnapshot) => {

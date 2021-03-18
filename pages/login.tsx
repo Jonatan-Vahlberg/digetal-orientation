@@ -12,25 +12,29 @@ import Link from 'next/link'
 import endpoints from '../helpers/endpoints'
 import StyledLink from '../components/Link/StyledLink'
 import { loginSchema } from '../helpers/formikValidationSchemas'
+import Firebase from '../config/firebase'
+import { rerouteOnAuthorized } from '../helpers/validation'
 
 const LoginPage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl()
   const userStore = useUserStore()
   const locationStore = useLocationStore()
   const authStore = useAuthStore()
-  useEffect(() => {
-    if (navigator) {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.watchPosition((position) => {
-          const { latitude, longitude } = position.coords
-          locationStore.setCoordinates([latitude, longitude])
-        })
-      }
-    }
-  }, [])
+
+  // useEffect(() => {
+  //   if (navigator) {
+  //     if ('geolocation' in navigator) {
+  //       navigator.geolocation.watchPosition((position) => {
+  //         const { latitude, longitude } = position.coords
+  //         locationStore.setCoordinates([latitude, longitude])
+  //       })
+  //     }
+  //   }
+  // }, [])
 
   useEffect(() => {
     console.log('COORDS', locationStore.coordinates)
+    // console.log('USER', Firebase.auth().currentUser)
   }, [locationStore.coordinates])
   return (
     <Layout>
@@ -76,6 +80,11 @@ const LoginPage: NextPage<{}> = () => {
       </Formik>
     </Layout>
   )
+}
+
+export const getServerSideProps = async (ctx) => {
+  const props = rerouteOnAuthorized(ctx)
+  return props
 }
 
 export default observer(LoginPage)

@@ -1,24 +1,22 @@
 import firebase from 'firebase'
 
-const firebaseConfig = {
+const FIREBASE_CONFIG = {
   apiKey: process.env.NEXT_PUBLIC_FB_API,
-  authDomain: 'digital-orientation.firebaseapp.com',
+  authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
   projectId: 'digital-orientation',
   storageBucket: 'digital-orientation.appspot.com',
-  messagingSenderId: '724819056475',
+  messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGE_ID,
   appId: process.env.NEXT_PUBLIC_FB_APP_ID,
-  measurementId: 'G-CRF3Z66TN5',
-  databaseURL:
-    'https://digital-orientation-default-rtdb.europe-west1.firebasedatabase.app',
+  measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID,
+  databaseURL: process.env.NEXT_PUBLIC_FB_DATABASE,
 }
 
-try {
-  firebase.initializeApp(firebaseConfig)
-} catch (err) {
-  if (!/already exists/.test(err.message)) {
-    console.log('FIREBASE ALREADY INITALIZED')
+export default function firebaseClient() {
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG)
+  } catch (err) {
+    if (!/already exists/.test(err.message)) {
+      console.log('FIREBASE ALREADY INITALIZED')
+    }
   }
 }
-
-const Firebase = firebase
-export default Firebase
