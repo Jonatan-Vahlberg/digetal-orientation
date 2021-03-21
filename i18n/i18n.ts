@@ -33,6 +33,19 @@ export default {
         confirm: 'Passwords must match',
       },
     },
+    route: {
+      detail: {
+        steps: 'steps',
+        availableFrom: 'Available from',
+        type: 'Route-type',
+        routeId: 'Route-id',
+        buttonStates: {
+          unstarted: 'start',
+          started: 'continue',
+          done: 'reset',
+        },
+      },
+    },
   },
   sv: {
     login: {
@@ -66,6 +79,19 @@ export default {
         required: 'Ett lösenord krävs',
         valid: 'Lösenordet måste vara minst 8 tecken långt',
         confirm: 'Lösenorden måste matcha',
+      },
+    },
+    route: {
+      detail: {
+        steps: 'Antal steg',
+        availableFrom: 'Tillgänglig',
+        type: 'Bantyp',
+        routeId: 'Ban-id',
+        buttonStates: {
+          unstarted: 'starta',
+          started: 'Fortsätt',
+          done: 'Återställ',
+        },
       },
     },
   },
