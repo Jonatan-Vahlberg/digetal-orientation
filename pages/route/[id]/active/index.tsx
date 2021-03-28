@@ -7,6 +7,7 @@ import LoadingSkeleton from '~/components/LoadingSkeleton'
 import { activeMapRouteSkeleton } from '~/helpers/skeletons'
 import RouteHeader from '~/components/RouteHeader'
 import { useRouter } from 'next/router'
+import Map from '~/components/Map'
 
 interface ActiveRouteProps {}
 
@@ -17,6 +18,7 @@ const ActiveRoute: NextPage<ActiveRouteProps> = () => {
     <Layout padded>
       <RouteHeader />
       <LoadingSkeleton spesificRows={activeMapRouteSkeleton} />
+      <Map visibleNodes={[]} />
     </Layout>
   )
 }
