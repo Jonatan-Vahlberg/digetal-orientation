@@ -6,7 +6,7 @@ import Input from '../Input'
 import Map from '../Map'
 
 interface CodeStepComponentProps {
-  step: Step
+  step?: Step
 }
 
 const codeData: CodeData = {
