@@ -5,6 +5,7 @@ import { useLocationStore } from '~/helpers/stores'
 import { paperStyle } from '~/config/mapStyle'
 import CircleNode from './CircleNode'
 import NodeInformationWindow from './NodeInformationWindow'
+import PolygonNode from './PolygonNode'
 interface BaseProps {
   visibleNodes: any[]
   userLocation: UserCoordinates
@@ -14,7 +15,10 @@ const options = {
   styles: paperStyle,
 }
 
-const Map: React.FC<{ visibleNodes: any[] }> = ({ visibleNodes }) => {
+const Map: React.FC<{
+  visiblePolygonNodes?: PolygonNodeType[]
+  visibleCircleNodes?: CircleNodeType[]
+}> = ({ visiblePolygonNodes, visibleCircleNodes }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
@@ -42,7 +46,23 @@ const Map: React.FC<{ visibleNodes: any[] }> = ({ visibleNodes }) => {
         onUnmount={onUnmount}
         options={options}
       >
-        <CircleNode
+        {visiblePolygonNodes &&
+          visiblePolygonNodes.map((node, index) => (
+            <PolygonNode
+              key={`POLYGON NODE KEY ${index}`}
+              node={node}
+              setSelectedNode={setSelectedNode}
+            />
+          ))}
+        {visibleCircleNodes &&
+          visibleCircleNodes.map((node, index) => (
+            <CircleNode
+              key={`POLYGON NODE KEY ${index}`}
+              node={node}
+              setSelectedNode={setSelectedNode}
+            />
+          ))}
+        {/* <CircleNode
           node={{
             pointOfOrigin: { lat: coordinates[0], lng: coordinates[1] },
             radius: 5,
@@ -66,7 +86,7 @@ const Map: React.FC<{ visibleNodes: any[] }> = ({ visibleNodes }) => {
             },
           }}
           setSelectedNode={setSelectedNode}
-        />
+        /> */}
         {selectedNode && (
           <NodeInformationWindow
             node={selectedNode}

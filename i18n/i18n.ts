@@ -46,6 +46,12 @@ export default {
         },
       },
     },
+    step: {
+      code: {
+        inputPlaceholder: 'Enter code',
+        sendCode: 'Send code',
+      },
+    },
   },
   sv: {
     login: {
@@ -92,6 +98,12 @@ export default {
           started: 'Fortsätt',
           done: 'Återställ',
         },
+      },
+    },
+    step: {
+      code: {
+        inputPlaceholder: 'Skriv in kod',
+        sendCode: 'Skicka kod',
       },
     },
   },

@@ -10,7 +10,7 @@ const Layout: React.FC<LayoutProps> = ({ children, padded }) => {
     return (
       <Wrapper>
         <Container>
-          <div className="p-4 w-full">{children}</div>
+          <div className="p-4 w-full h-full">{children}</div>
         </Container>
       </Wrapper>
     )

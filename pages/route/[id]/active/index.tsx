@@ -8,6 +8,7 @@ import { activeMapRouteSkeleton } from '~/helpers/skeletons'
 import RouteHeader from '~/components/RouteHeader'
 import { useRouter } from 'next/router'
 import Map from '~/components/Map'
+import CodeStepComponent from '~/components/StepComponent/CodeStepComponent'
 
 interface ActiveRouteProps {}
 
@@ -17,8 +18,8 @@ const ActiveRoute: NextPage<ActiveRouteProps> = () => {
   return (
     <Layout padded>
       <RouteHeader />
-      <LoadingSkeleton spesificRows={activeMapRouteSkeleton} />
-      <Map visibleNodes={[]} />
+      {/* <LoadingSkeleton spesificRows={activeMapRouteSkeleton} /> */}
+      <CodeStepComponent />
     </Layout>
   )
 }

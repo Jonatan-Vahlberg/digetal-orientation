@@ -1,41 +1,41 @@
 type FullRoute = {
-  uuid: string;
-  title: string;
-  description: string;
-  availableFrom: string; //timestamp
-  type: 'ORIENTATION' | 'MIX';
+  uuid: string
+  title: string
+  description: string
+  availableFrom: string //timestamp
+  type: 'ORIENTATION' | 'MIX'
 
-  steps: Step[];
+  steps: Step[]
   emergancyContact?: {
-    name: string;
-    phone: string;
-  };
-};
+    name: string
+    phone: string
+  }
+}
 
 type Step = {
-  stepIndex: number;
-  type: 'CODE' | 'COORDS' | 'RADAR';
-  stepData: CodeData | RadarData | CoordData;
-};
+  stepIndex: number
+  type: 'CODE' | 'COORDS' | 'RADAR' | 'LOCATION'
+  stepData: CodeData | RadarData | CoordData
+}
 
-type CodeData = Step & {
-  title?: string;
-  description?: string;
-  hints: Message[];
-  coords?: Coordinates;
-  code: string;
-};
+type CodeData = {
+  title: string
+  description: string
+  node: PolygonNodeType
+  acceptCodeOutside: boolean
+  code: string
+}
 
-type CoordData = Step & {
-  title?: string;
-  description?: string;
-  hints: Message[];
-  coords: Coordinates;
-};
+type CoordData = {
+  title?: string
+  description?: string
+  hints: Message[]
+  coords: Coordinates
+}
 
-type RadarData = Step & {
-  title?: string;
-  description?: string;
-  hints: Message[];
-  coords: Coordinates;
-};
+type RadarData = {
+  title?: string
+  description?: string
+  hints: Message[]
+  coords: Coordinates
+}
