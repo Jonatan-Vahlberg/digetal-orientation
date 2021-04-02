@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .inset-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .animate-radar-circle {
+    animation: bounce 2s infinite;
+  }
+  .animate-radar-circle-delay-2 {
+    animation: bounce 2s 0.5s infinite;
+  }
+}
+
 html,
 body {
   height: 100%;
@@ -23,4 +39,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+  }
 }

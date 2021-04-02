@@ -1,6 +1,7 @@
 import { Form, Formik } from 'formik'
 import React from 'react'
 import { useIntl } from 'react-intl'
+import { caluclateDistance } from '~/helpers/functions'
 import Button from '../Button'
 import Input from '../Input'
 import Map from '../Map'
@@ -33,11 +34,22 @@ const TestingData: Step = {
   type: 'CODE',
 }
 
+const vertex1: Vertex = {
+  lat: 59.285418,
+  lng: 18.03917,
+}
+
+const vertex2: Vertex = {
+  lat: 59.285446,
+  lng: 18.039138,
+}
+
 const CodeStepComponent: React.FC<CodeStepComponentProps> = ({ step }) => {
   const { formatMessage: f } = useIntl()
   const stepdetails = { ...TestingData.stepData } as CodeData
+  caluclateDistance(vertex1, vertex2)
   return (
-    <div className="w-full flex flex-col max-h-screen h-full">
+    <div className="w-full flex flex-col h-full">
       <p className="flex-none">{stepdetails.title}</p>
       <p className="flex-none">{stepdetails.description}</p>
       <div className="flex-grow my-3">
@@ -45,9 +57,16 @@ const CodeStepComponent: React.FC<CodeStepComponentProps> = ({ step }) => {
       </div>
       <div>
         <Formik initialValues={{ code: '' }} onSubmit={() => {}}>
-          {({}) => (
+          {({ values }) => (
             <Form>
-              <Input name="code" />
+              <Input
+                name="code"
+                placeholder={f({ id: 'step.code.inputPlaceholder' })}
+                className="w-full mb-3"
+              />
+              <Button disabled={values.code === ''}>
+                {f({ id: 'step.code.sendCode' })}
+              </Button>
             </Form>
           )}
         </Formik>

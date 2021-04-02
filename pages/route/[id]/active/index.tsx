@@ -9,6 +9,7 @@ import RouteHeader from '~/components/RouteHeader'
 import { useRouter } from 'next/router'
 import Map from '~/components/Map'
 import CodeStepComponent from '~/components/StepComponent/CodeStepComponent'
+import RadarStepComponent from '~/components/StepComponent/RadarStepComponent'
 
 interface ActiveRouteProps {}
 
@@ -19,7 +20,8 @@ const ActiveRoute: NextPage<ActiveRouteProps> = () => {
     <Layout padded>
       <RouteHeader />
       {/* <LoadingSkeleton spesificRows={activeMapRouteSkeleton} /> */}
-      <CodeStepComponent />
+      {/* <CodeStepComponent /> */}
+      <RadarStepComponent />
     </Layout>
   )
 }

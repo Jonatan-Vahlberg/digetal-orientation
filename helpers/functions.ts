@@ -17,3 +17,21 @@ export const capitalizeAll = (string: string) => {
   )
   return parts.join(' ')
 }
+
+const square = (x: number) => Math.pow(x, 2)
+const degToRad = (deg: number) => deg * (Math.PI / 180)
+
+export const caluclateDistance = (position1: Vertex, position2: Vertex) => {
+  const earthsRadius = 6371
+  const latitude1 = degToRad(position1.lat)
+  const latitude2 = degToRad(position2.lat)
+  const latitudeDiff = Math.abs(latitude1 - latitude2)
+  const longitudeDiff = degToRad(Math.abs(position1.lng - position2.lng))
+  const a =
+    square(Math.sin(latitudeDiff / 2)) +
+    Math.cos(latitude1) *
+      Math.cos(latitude2) *
+      square(Math.sin(longitudeDiff / 2))
+  const d = 2 * earthsRadius * Math.asin(Math.sqrt(a))
+  console.log('FIELD DISTANCE ', d, d * 1000)
+}
