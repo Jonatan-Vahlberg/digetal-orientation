@@ -44,7 +44,7 @@ const CodeStepComponent: React.FC<CodeStepComponentProps> = ({ step }) => {
         <Map visiblePolygonNodes={[stepdetails.node]} />
       </div>
       <div>
-        <Formik>
+        <Formik initialValues={{ code: '' }} onSubmit={() => {}}>
           {({}) => (
             <Form>
               <Input name="code" />
