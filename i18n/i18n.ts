@@ -51,6 +51,7 @@ export default {
         inputPlaceholder: 'Enter code',
         sendCode: 'Send code',
       },
+      next: 'Next',
     },
   },
   sv: {
@@ -105,6 +106,7 @@ export default {
         inputPlaceholder: 'Skriv in kod',
         sendCode: 'Skicka kod',
       },
+      next: 'Nästa',
     },
   },
 }

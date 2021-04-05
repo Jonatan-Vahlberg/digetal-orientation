@@ -1,16 +1,16 @@
 type User = {
-  uuid: string;
-  firstName: string;
-  lastName: string;
+  uuid: string
+  firstName: string
+  lastName: string
 
-  routes: [];
-};
+  routes: UserRoute[]
+}
 
 type UserRoute = {
-  uuid: string;
-  title: string;
-  stepsClear: number[];
-  finished: boolean;
-  started: string; //timestamp
-  ended: string; //timestamp
-};
+  uuid: string
+  title: string
+  stepsClear: number[]
+  finished: boolean
+  started: string //timestamp
+  ended?: string //timestamp
+}

@@ -8,7 +8,7 @@ export const rerouteOnUnauthorized = async (ctx: NextPageContext) => {
     const token = await verifyIdToken(cookies.FB_TOKEN)
     console.log('TOKEN GOT', token.uid)
     return {
-      props: {},
+      props: { uid: token.uid },
     }
   } catch (error) {
     ctx.res.writeHead(302, { location: '/login' })

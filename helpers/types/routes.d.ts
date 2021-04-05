@@ -37,5 +37,5 @@ type RadarData = {
   title?: string
   description?: string
   hints: Message[]
-  coords: Coordinates
+  node: CircleNodeType
 }

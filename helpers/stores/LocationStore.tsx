@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import classifyPoint from 'robust-point-in-polygon'
+import { caluclateDistance } from '../functions'
 
 const polygon = [
   [59.2851255144915, 18.038505839647919],
@@ -9,21 +10,26 @@ const polygon = [
 ]
 
 class LocationStore {
-  coordinates: number[] = [59.284893, 18.038732]
+  coordinates: Vertex = { lat: 0, lng: 0 }
   falseCoordinates = [59.284893, 18.038732]
-  fencedArea = {}
+
   constructor() {
     makeAutoObservable(this)
   }
 
-  setCoordinates(coordinates: [number, number]) {
+  setCoordinates(coordinates: Vertex) {
     this.coordinates = coordinates
   }
 
   isInPolygon() {
-    const isInside = classifyPoint(polygon, this.coordinates)
+    const { lat, lng } = this.coordinates
+    const isInside = classifyPoint(polygon, [lat, lng])
     // console.log('INSIDE', isInside);
     return isInside === -1 || isInside === 0
+  }
+
+  getDistance(destination: Vertex) {
+    return Math.round(caluclateDistance(destination, this.coordinates))
   }
 }
 

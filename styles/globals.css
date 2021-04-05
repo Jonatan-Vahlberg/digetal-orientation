@@ -11,10 +11,34 @@
   }
 
   .animate-radar-circle {
-    animation: bounce 2s infinite;
+    animation: bounce 3s infinite;
   }
-  .animate-radar-circle-delay-2 {
-    animation: bounce 2s 0.5s infinite;
+  .animate-duration-0 {
+    animation-duration: 0.5s;
+  }
+  .animate-duration-1 {
+    animation-duration: 1s;
+  }
+  .animate-duration-2 {
+    animation-duration: 2s;
+  }
+  .animate-duration-3 {
+    animation-duration: 3s;
+  }
+  .animate-duration-4 {
+    animation-duration: 4s;
+  }
+  .animate-duration-5 {
+    animation-duration: 5s;
+  }
+  .animate-delay-1 {
+    animation-delay: 0.5s;
+  }
+  .animate-delay-2 {
+    animation-delay: 0.75s;
+  }
+  .animate-delay-3 {
+    animation-delay: 1s;
   }
 }
 
