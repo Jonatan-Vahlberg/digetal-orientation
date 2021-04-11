@@ -11,7 +11,7 @@
   }
 
   .animate-radar-circle {
-    animation: bounce 3s infinite;
+    animation: bounce 3s infinite cubic-bezier(0, 1.22, 1, 1);
   }
   .animate-duration-0 {
     animation-duration: 0.5s;
@@ -67,7 +67,7 @@ a {
 
 @keyframes bounce {
   0% {
-    transform: translate(-50%, -50%) scale(0.1);
+    transform: translate(-50%, -50%) scale(0.03);
   }
 
   100% {

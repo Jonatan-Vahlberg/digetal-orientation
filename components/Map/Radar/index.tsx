@@ -40,7 +40,7 @@ const Radar: React.FC<{ distance: number }> = ({ distance }) => {
           width="w-9/12"
           height="h-3/4"
         />
-        <RadarCircle
+        {/* <RadarCircle
           duration={duration}
           delay={2}
           width="w-3/12"
@@ -57,7 +57,7 @@ const Radar: React.FC<{ distance: number }> = ({ distance }) => {
           delay={1}
           width="w-9/12"
           height="h-3/4"
-        />
+        /> */}
       </div>
     </div>
   )

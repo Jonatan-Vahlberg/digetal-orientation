@@ -6,6 +6,7 @@ const ROUTE_LOCATION = 'users'
 
 class UserStore {
   user?: User
+  userLoading: boolean = true
 
   constructor() {
     makeAutoObservable(this)
@@ -17,6 +18,8 @@ class UserStore {
   }
 
   async getUser(uid: string) {
+    this.userLoading = true
+
     firebase
       .database()
       .ref(`${ROUTE_LOCATION}/${uid}`)
@@ -28,6 +31,7 @@ class UserStore {
             user.routes = []
           }
           this.user = user
+          this.userLoading = false
         }
       })
       .catch(() => {})

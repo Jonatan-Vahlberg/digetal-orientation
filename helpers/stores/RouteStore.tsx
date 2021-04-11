@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { computed, makeAutoObservable } from 'mobx'
 import firebase from 'firebase/app'
 import firebaseClient from '../../config/firebase'
 import 'firebase/auth'
@@ -32,6 +32,10 @@ class RouteStore {
       .catch((error) => {
         console.log('ERROR', error)
       })
+  }
+
+  getStep(stepIndex: number) {
+    return this.currentRoute?.steps[stepIndex]
   }
 }
 

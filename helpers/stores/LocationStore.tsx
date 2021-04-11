@@ -10,11 +10,59 @@ const polygon = [
 ]
 
 class LocationStore {
+  watchId?: number | NodeJS.Timeout
   coordinates: Vertex = { lat: 0, lng: 0 }
   falseCoordinates = [59.284893, 18.038732]
 
   constructor() {
     makeAutoObservable(this)
+    this.watchPosition()
+  }
+
+  watchPosition() {
+    console.log(typeof window)
+    if (typeof window !== 'undefined' && !this.watchId) {
+      if ('geolocation' in window.navigator) {
+        // this.watchId = window.navigator.geolocation.watchPosition(
+        //   ({ coords: { latitude: lat, longitude: lng } }) => {
+        //     this.coordinates = {
+        //       lat,
+        //       lng,
+        //     }
+        //   }
+        // )
+        window.navigator.geolocation.getCurrentPosition(
+          ({ coords: { latitude: lat, longitude: lng } }) => {
+            console.log('POSITION GOT')
+            this.coordinates = {
+              lat,
+              lng,
+            }
+          }
+        )
+        this.watchId = setInterval(() => {
+          window.navigator.geolocation.getCurrentPosition(
+            ({ coords: { latitude: lat, longitude: lng } }) => {
+              console.log('POSITION GOT')
+              this.coordinates = {
+                lat,
+                lng,
+              }
+            },
+            (error) => console.warn('ERROR', error)
+          )
+        }, 5000)
+      }
+    }
+  }
+
+  clearWatch() {
+    if (typeof window !== 'undefined' && this.watchId) {
+      if ('geolocation' in window.navigator) {
+        //@ts-ignore
+        clearInterval(this.watchId)
+      }
+    }
   }
 
   setCoordinates(coordinates: Vertex) {
