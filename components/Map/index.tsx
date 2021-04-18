@@ -6,6 +6,7 @@ import { paperStyle } from '~/config/mapStyle'
 import CircleNode from './CircleNode'
 import NodeInformationWindow from './NodeInformationWindow'
 import PolygonNode from './PolygonNode'
+import UserMarker from './UserMarker'
 interface BaseProps {
   visibleNodes: any[]
   userLocation: UserCoordinates
@@ -35,12 +36,12 @@ const Map: React.FC<{
   }, [])
   const locationStore = useLocationStore()
   const { coordinates } = locationStore
-  console.log(coordinates)
+  const { lat, lng } = coordinates
   return (
     isLoaded && (
       <GoogleMap
         mapContainerClassName="w-full h-full"
-        center={{ lat: coordinates[0], lng: coordinates[1] }}
+        center={{ lat, lng }}
         zoom={16}
         onLoad={onLoad}
         onUnmount={onUnmount}
@@ -62,6 +63,8 @@ const Map: React.FC<{
               setSelectedNode={setSelectedNode}
             />
           ))}
+
+        {coordinates && <UserMarker coordinates={coordinates} />}
         {/* <CircleNode
           node={{
             pointOfOrigin: { lat: coordinates[0], lng: coordinates[1] },

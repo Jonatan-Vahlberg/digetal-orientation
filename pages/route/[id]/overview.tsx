@@ -27,7 +27,15 @@ const Route: NextPage<{ id: string; uid: string }> = ({ id, uid }) => {
   const { currentRoute, loading } = routeStore
 
   useEffect(() => {
-    routeStore.getRoute(id.toString())
+    if (
+      !routeStore.currentRoute ||
+      routeStore?.currentRoute.uuid === id.toString()
+    )
+      routeStore.getRoute(
+        id,
+        () => {},
+        () => {}
+      )
   }, [routeStore])
   useEffect(() => {
     if (uid) {

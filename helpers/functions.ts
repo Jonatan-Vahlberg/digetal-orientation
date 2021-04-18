@@ -33,6 +33,5 @@ export const caluclateDistance = (position1: Vertex, position2: Vertex) => {
       Math.cos(latitude2) *
       square(Math.sin(longitudeDiff / 2))
   const d = 2 * earthsRadius * Math.asin(Math.sqrt(a))
-  console.log('FIELD DISTANCE ', d, d * 1000)
   return d * 1000
 }

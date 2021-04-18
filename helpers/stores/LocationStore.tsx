@@ -11,12 +11,11 @@ const polygon = [
 
 class LocationStore {
   watchId?: number | NodeJS.Timeout
-  coordinates: Vertex = { lat: 0, lng: 0 }
-  falseCoordinates = [59.284893, 18.038732]
+  coordinates?: Vertex = { lat: 0, lng: 0 }
 
   constructor() {
     makeAutoObservable(this)
-    this.watchPosition()
+    //this.watchPosition()
   }
 
   watchPosition() {
@@ -33,26 +32,32 @@ class LocationStore {
         // )
         window.navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude: lat, longitude: lng } }) => {
-            console.log('POSITION GOT')
-            this.coordinates = {
-              lat,
-              lng,
-            }
+            this.updateCoordinates(lat, lng)
+          },
+          () => {},
+          {
+            enableHighAccuracy: true,
           }
         )
         this.watchId = setInterval(() => {
           window.navigator.geolocation.getCurrentPosition(
             ({ coords: { latitude: lat, longitude: lng } }) => {
-              console.log('POSITION GOT')
-              this.coordinates = {
-                lat,
-                lng,
-              }
+              this.updateCoordinates(lat, lng)
             },
-            (error) => console.warn('ERROR', error)
+            (error) => console.warn('ERROR', error),
+            {
+              enableHighAccuracy: true,
+            }
           )
         }, 5000)
       }
+    }
+  }
+
+  updateCoordinates(lat: number, lng: number) {
+    this.coordinates = {
+      lat,
+      lng,
     }
   }
 
@@ -72,12 +77,16 @@ class LocationStore {
   isInPolygon() {
     const { lat, lng } = this.coordinates
     const isInside = classifyPoint(polygon, [lat, lng])
-    // console.log('INSIDE', isInside);
     return isInside === -1 || isInside === 0
   }
 
   getDistance(destination: Vertex) {
     return Math.round(caluclateDistance(destination, this.coordinates))
+  }
+
+  wipeData() {
+    this.clearWatch()
+    this.coordinates = undefined
   }
 }
 

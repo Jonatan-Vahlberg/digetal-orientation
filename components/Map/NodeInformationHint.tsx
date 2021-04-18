@@ -22,7 +22,6 @@ const NodeInformationHint: React.FC<NodeInformationHintProps> = ({
     if (openHints.length === 0) return true
     return openHints.some((hintIndex) => hintIndex !== index - 1)
   })()
-  console.log('ISLOCKED', index, isHintLocked)
   return (
     <div className="mb-2">
       {hintIsOpen ? (

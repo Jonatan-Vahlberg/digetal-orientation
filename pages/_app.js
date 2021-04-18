@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
     <StoreProvider stores={{ userStore, authStore, locationStore, routeStore }}>
       <IntlProvider locale={locale} messages={flatten(i18n[locale])}>
         <ThemeProvider theme={theme}>
-          <Component {...pageProps} />;
+          <Component {...pageProps} />
         </ThemeProvider>
       </IntlProvider>
     </StoreProvider>

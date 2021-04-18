@@ -15,6 +15,7 @@ class UserStore {
 
   setUser(user?: User) {
     this.user = user
+    this.userLoading = false
   }
 
   async getUser(uid: string) {
@@ -30,20 +31,19 @@ class UserStore {
           if (!user.routes) {
             user.routes = []
           }
-          this.user = user
-          this.userLoading = false
+          this.setUser(user)
         }
       })
       .catch(() => {})
   }
 
-  async updateUser(uid: string, data: any, onComplete: () => void) {
+  async updateUser(data: any, onComplete: () => void) {
     firebase
       .database()
-      .ref(`${ROUTE_LOCATION}/${uid}`)
+      .ref(`${ROUTE_LOCATION}/${this.user.uuid}`)
       .update(data, (error) => {
         if (error === null) {
-          this.user = { ...this.user, ...data }
+          this.setUser({ ...this.user, ...data })
           onComplete()
         }
       })
@@ -58,22 +58,47 @@ class UserStore {
       started: new Date().toString(),
     }
     const routes = [...this.user?.routes, newRoute]
-    this.updateUser(uid, { routes }, onComplete)
+    this.updateUser({ routes }, onComplete)
   }
 
-  async updateRoute(uid: string, route: UserRoute, onComplete: () => void) {
+  getNextStep(id: string): [boolean, number] {
+    const route = this.user?.routes.find(({ uuid }) => id === uuid)
+    let fullClear = false
+    if (!route || !route.stepsClear || route.stepsClear?.length === 0) {
+      return [fullClear, 0]
+    }
+    console.log(route.stepsClear)
+    const highestClearedStep = Math.max(...route.stepsClear)
+    if (highestClearedStep >= route.stepsClear.length) {
+      fullClear = true
+    }
+    return [fullClear, highestClearedStep + 1]
+  }
+
+  markStepAsCompleted(routeId: string, step: Step, onComplete: () => void) {
+    const route = this.user?.routes.find(({ uuid }) => routeId === uuid)
+    const stepsClear = route.stepsClear ?? []
+    stepsClear.push(step.stepIndex)
+    this.updateRoute({ ...route, stepsClear }, onComplete)
+  }
+  async updateRoute(route: UserRoute, onComplete: () => void) {
     const routeIndex = this.user?.routes.findIndex(
       (oldRoute) => oldRoute.uuid === route.uuid
     )
     let routes = [...this.user?.routes]
     routes[routeIndex] = route
-    this.updateUser(uid, { routes }, onComplete)
+    this.updateUser({ routes }, onComplete)
   }
 
   findRoute(currentRoute: FullRoute): UserRoute | undefined {
     let route: UserRoute | undefined = undefined
     route = this.user?.routes.find((route) => route.uuid === currentRoute.uuid)
     return route
+  }
+
+  wipeData() {
+    this.user = undefined
+    this.userLoading = true
   }
 }
 

@@ -12,27 +12,38 @@ import CodeStepComponent from '~/components/StepComponent/CodeStepComponent'
 import RadarStepComponent from '~/components/StepComponent/RadarStepComponent'
 import { useLocationStore, useRouteStore, useUserStore } from '~/helpers/stores'
 import { rerouteOnUnauthorized } from '~/helpers/validation'
+import Button from '~/components/Button'
+import { useIntl } from 'react-intl'
+import Endpoints from '~/helpers/endpoints'
 
 interface ActiveRouteProps {
   uid: string
 }
 
 const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
+  const { formatMessage: f } = useIntl()
   const router = useRouter()
-  const { id, title } = router.query
+  const { id: queryId, title } = router.query
+  const id = queryId.toString()
+
   const userStore = useUserStore()
   const { user, userLoading } = userStore
-  console.log('user', props)
   const routeStore = useRouteStore()
   const locationStore = useLocationStore()
   const { currentRoute, loading: routeIsLoading } = routeStore
 
   const [currentStep, setCurrentStep] = useState<Step>()
+  console.log('STEP', currentStep)
   useEffect(() => {
     if (id) {
       if (currentRoute?.uuid !== id) {
-        routeStore.getRoute(id.toString())
+        routeStore.getRoute(
+          id,
+          () => {},
+          () => {}
+        )
       }
+      console.log()
       if (!user) {
         userStore.getUser(props.uid)
       }
@@ -41,21 +52,32 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
   }, [id])
   useEffect(() => {
     if (currentRoute && user) {
-      const nextStepIndex = 0
-      const step = routeStore.getStep(nextStepIndex)
-      setCurrentStep(step)
+      const [isCleared, nextStepIndex] = userStore.getNextStep(id)
+      if (!isCleared) {
+        const step = routeStore.getStep(nextStepIndex)
+        setCurrentStep(step)
+      } else {
+        const { href, as } = Endpoints.ROUTE_OVERVIEW(id)
+        router.push(href, as)
+      }
     }
   }, [currentRoute, user])
+  useEffect(() => {
+    return () => {
+      locationStore.clearWatch()
+    }
+  }, [])
+  console.log('LOADING', routeIsLoading, userLoading, user)
   return (
     <Layout padded>
       <RouteHeader />
-      {routeIsLoading || userLoading ? (
+      {routeIsLoading || !user ? (
         <LoadingSkeleton spesificRows={activeMapRouteSkeleton} />
       ) : (
         (() => {
           if (currentStep) {
             if (currentStep.type === 'RADAR')
-              return <RadarStepComponent step={currentStep} />
+              return <RadarStepComponent step={currentStep} routeId={id} />
             else return <CodeStepComponent step={currentStep} />
           }
           return null

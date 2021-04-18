@@ -34,7 +34,6 @@ class AuthStore {
       .auth()
       .createUserWithEmailAndPassword(details.email, details.password)
       .then((userCredentials) => {
-        console.log('USER CRED', userCredentials)
         const user: User = {
           uuid: userCredentials.user.uid,
           firstName: details.firstName,
@@ -85,6 +84,15 @@ class AuthStore {
               onError(error)
             }
           })
+      })
+  }
+
+  signoutUser(onSignout: () => void) {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        onSignout()
       })
   }
 }

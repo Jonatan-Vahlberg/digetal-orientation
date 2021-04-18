@@ -46,8 +46,7 @@ const vertex2: Vertex = {
 
 const CodeStepComponent: React.FC<CodeStepComponentProps> = ({ step }) => {
   const { formatMessage: f } = useIntl()
-  const stepdetails = { ...TestingData.stepData } as CodeData
-  caluclateDistance(vertex1, vertex2)
+  const stepdetails = { ...step.stepData } as CodeData
   return (
     <div className="w-full flex flex-col h-full">
       <p className="flex-none">{stepdetails.title}</p>

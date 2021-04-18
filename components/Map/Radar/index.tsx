@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const Radar: React.FC<{ distance: number }> = ({ distance }) => {
+const Radar: React.FC<{ distance: number }> = ({ distance = 300 }) => {
   const [duration, setDuration] = useState(distance)
 
   useEffect(() => {

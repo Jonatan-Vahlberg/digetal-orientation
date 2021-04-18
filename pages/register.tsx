@@ -2,17 +2,22 @@ import { Form, Formik } from 'formik'
 import { observer } from 'mobx-react-lite'
 import { NextPage } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useIntl } from 'react-intl'
+import { rerouteOnAuthorized } from '~/helpers/validation'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import Layout from '../components/Layout'
 import StyledLink from '../components/Link/StyledLink'
+import Endpoints from '../helpers/endpoints'
 import endpoints from '../helpers/endpoints'
 import { registerSchema } from '../helpers/formikValidationSchemas'
 import { capitalize } from '../helpers/functions'
 import { useAuthStore, useUserStore } from '../helpers/stores'
 
 const RegisterPage: NextPage<{}> = () => {
+  const router = useRouter()
+
   const authStore = useAuthStore()
   const userStore = useUserStore()
   const { formatMessage: f } = useIntl()
@@ -34,9 +39,10 @@ const RegisterPage: NextPage<{}> = () => {
             details,
             (user) => {
               userStore.setUser(user)
+              router.push(Endpoints.HOME)
             },
             (error) => {
-              console.log('NOT DONE', error)
+              //TODO:
             }
           )
         }}
@@ -93,6 +99,11 @@ const RegisterPage: NextPage<{}> = () => {
       </Formik>
     </Layout>
   )
+}
+
+export const getServerSideProps = async (ctx) => {
+  const props = rerouteOnAuthorized(ctx)
+  return props
 }
 
 export default observer(RegisterPage)

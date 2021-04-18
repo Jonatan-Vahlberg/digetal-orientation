@@ -14,9 +14,12 @@ import StyledLink from '../components/Link/StyledLink'
 import { loginSchema } from '../helpers/formikValidationSchemas'
 import Firebase from '../config/firebase'
 import { rerouteOnAuthorized } from '../helpers/validation'
+import { useRouter } from 'next/router'
+import Endpoints from '../helpers/endpoints'
 
 const LoginPage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl()
+  const router = useRouter()
   const userStore = useUserStore()
   const locationStore = useLocationStore()
   const authStore = useAuthStore()
@@ -33,8 +36,7 @@ const LoginPage: NextPage<{}> = () => {
   // }, [])
 
   useEffect(() => {
-    console.log('COORDS', locationStore.coordinates)
-    // console.log('USER', Firebase.auth().currentUser)
+    // console.log('COORDS', locationStore.coordinates)
   }, [locationStore.coordinates])
   return (
     <Layout>
@@ -47,6 +49,7 @@ const LoginPage: NextPage<{}> = () => {
         onSubmit={(values) => {
           authStore.signInUser(values, (user) => {
             userStore.setUser(user)
+            router.push(Endpoints.HOME)
           })
         }}
       >

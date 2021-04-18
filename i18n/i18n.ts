@@ -16,6 +16,8 @@ export default {
     home: {
       code: 'Path code',
       findPath: 'Find path',
+      logout: 'Logout',
+      noroute: 'Code is not connected to a route.',
     },
     errors: {
       firstName: {
@@ -52,6 +54,7 @@ export default {
         sendCode: 'Send code',
       },
       next: 'Next',
+      nodata: 'No data',
     },
   },
   sv: {
@@ -71,6 +74,8 @@ export default {
     home: {
       code: 'Ban kod',
       findPath: 'Hitta Bana',
+      logout: 'Logga ut',
+      noroute: 'Koden kan inte kopplas till en bana.',
     },
     errors: {
       firstName: {
@@ -107,6 +112,7 @@ export default {
         sendCode: 'Skicka kod',
       },
       next: 'Nästa',
+      nodata: 'Ingen data',
     },
   },
 }

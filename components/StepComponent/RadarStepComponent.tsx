@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useState } from 'react'
-import { useLocationStore } from '~/helpers/stores'
+import { useLocationStore, useUserStore } from '~/helpers/stores'
 import Radar from '../Map/Radar'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa'
 import { GoDash } from 'react-icons/go'
@@ -9,6 +9,7 @@ import Button from '../Button'
 import { useIntl } from 'react-intl'
 interface RadarStepComponentProps {
   step?: Step
+  routeId: string
 }
 
 // const step: Step = {
@@ -34,26 +35,25 @@ interface RadarStepComponentProps {
 //   }
 // }
 
-const RadarStepComponent: React.FC<RadarStepComponentProps> = ({ step }) => {
+const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
+  step,
+  routeId,
+}) => {
   const { formatMessage: f } = useIntl()
   const locationStore = useLocationStore()
+  const userStore = useUserStore()
+
   const stepdetails = step?.stepData as RadarData | undefined
-  const [distance, setDistance] = useState(50)
+  const [distance, setDistance] = useState<number>()
   const [movementState, setMovementState] = useState<
     'NUETRAL' | 'POSITIVE' | 'NEGATIVE'
   >('NUETRAL')
   useEffect(() => {
-    console.log(
-      'NED',
-      locationStore.coordinates,
-      stepdetails?.node.pointOfOrigin
-    )
     if (locationStore.coordinates && stepdetails) {
       setDistance((state) => {
         const newDistance = locationStore.getDistance(
           stepdetails.node.pointOfOrigin
         )
-        console.log('NEX', newDistance)
         setMovementState(
           state === newDistance
             ? 'NUETRAL'
@@ -68,15 +68,13 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({ step }) => {
   let textColor = 'text-white'
   textColor = movementState === 'POSITIVE' ? 'text-green-700' : textColor
   textColor = movementState === 'NEGATIVE' ? 'text-red-700' : textColor
-  console.log(textColor, movementState)
-
   return (
     <div className={'flex flex-col h-full items-center'}>
       <Radar distance={distance} />
       <p
         className={`text-2xl w-full text-center mt-3 font-semibold ${textColor}`}
       >
-        {distance} M
+        {distance ? `${distance} M` : f({ id: 'step.nodata' })}
         <span>
           {movementState === 'NUETRAL' && <GoDash className="inline" />}
           {movementState === 'POSITIVE' && <FaArrowUp className="inline" />}
@@ -84,7 +82,12 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({ step }) => {
         </span>
       </p>
       <div className="flex flex-grow items-end w-full">
-        <Button disabled={stepdetails?.node.radius <= distance}>
+        <Button
+          onClick={() => {
+            userStore.markStepAsCompleted(routeId, step, () => {})
+          }}
+          disabled={stepdetails?.node.radius <= distance}
+        >
           {f({ id: 'step.next' }).toUpperCase()}
         </Button>
       </div>

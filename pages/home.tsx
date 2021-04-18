@@ -4,39 +4,75 @@ import Layout from '../components/Layout'
 import { Form, Formik } from 'formik'
 import Button from '../components/Button'
 import { useIntl } from 'react-intl'
-import nookies from 'nookies'
-import { verifyIdToken } from '../config/admin'
 import { rerouteOnUnauthorized } from '../helpers/validation'
-import firebase from 'firebase/app'
+import {
+  useAuthStore,
+  useLocationStore,
+  useRouteStore,
+  useUserStore,
+} from '~/helpers/stores'
+import { useRouter } from 'next/router'
+import Endpoints from '~/helpers/endpoints'
+import { useState } from 'react'
 
 const HomePage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl()
+  const [error, setError] = useState<string>()
+  const router = useRouter()
+
+  const authStore = useAuthStore()
+  const routeStore = useRouteStore()
+  const userStore = useUserStore()
+  const locationStore = useLocationStore()
   return (
     <Layout>
       <Formik
         initialValues={{
           code: '',
         }}
-        onSubmit={() => {}}
+        onSubmit={(values) => {
+          setError(undefined)
+          routeStore.getRoute(
+            values.code,
+            () => {
+              const { href, as } = Endpoints.ROUTE_OVERVIEW(values.code)
+              router.push(href, as)
+            },
+            () => {
+              setError(f({ id: 'home.noroute' }))
+            }
+          )
+        }}
       >
-        {() => (
+        {({ values }) => (
           <Form>
             <Input
-              name="email"
-              type="email"
+              name="code"
+              type="text"
               placeholder={f({ id: 'home.code' })}
+              error={error}
+              touched={true}
             />
-            <Button type="submit" className="mt-10">
+            <Button
+              disabled={values.code.length < 6}
+              type="submit"
+              className="mt-10"
+            >
               {f({ id: 'home.findPath' })}
             </Button>
             <Button
               type="button"
               onClick={() => {
-                firebase.auth().signOut()
+                authStore.signoutUser(() => {
+                  routeStore.wipeData()
+                  userStore.wipeData()
+                  locationStore.wipeData()
+                  router.push(Endpoints.LOGIN.href)
+                })
               }}
               className="mt-1"
             >
-              LogOut
+              {f({ id: 'home.logout' })}
             </Button>
           </Form>
         )}

@@ -12,7 +12,7 @@ class RouteStore {
     firebaseClient()
   }
 
-  getRoute(routeId: string) {
+  getRoute(routeId: string, onRouteRecieved: () => void, onError: () => void) {
     this.loading = true
 
     firebase
@@ -22,20 +22,32 @@ class RouteStore {
       .then((snapshot) => {
         if (snapshot.exists()) {
           const route: FullRoute = snapshot.val()
-          console.log('route', route)
-          this.currentRoute = route
-          this.loading = false
+          this.setCurrentRoute(route)
+
+          onRouteRecieved()
         } else {
-          this.loading = false
+          this.setCurrentRoute(undefined)
+          onError()
         }
       })
       .catch((error) => {
         console.log('ERROR', error)
+        onError()
       })
+  }
+
+  setCurrentRoute(route?: FullRoute) {
+    this.currentRoute = route
+    this.loading = false
   }
 
   getStep(stepIndex: number) {
     return this.currentRoute?.steps[stepIndex]
+  }
+
+  wipeData() {
+    this.currentRoute = undefined
+    this.loading = true
   }
 }
 
