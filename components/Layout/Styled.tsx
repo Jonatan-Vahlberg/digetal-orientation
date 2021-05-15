@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div.attrs({
-  className: 'w-full h-screen bg-gray-300',
+  className: 'w-full min-h-screen bg-gray-300',
 })`
   overflow: scroll;
 `

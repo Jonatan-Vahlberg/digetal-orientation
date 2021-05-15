@@ -14,13 +14,20 @@ type FullRoute = {
 
 type Step = {
   stepIndex: number
-  type: 'CODE' | 'COORDS' | 'RADAR' | 'LOCATION'
-  stepData: CodeData | RadarData | CoordData
+  title: string
+  description?: string
+  radar?: RadarData
+  code?: CodeData
+  markup?: StepMarkup
+}
+
+type StepMarkup = {
+  visibleAlways?: string
+  visibleWhenClose?: string
 }
 
 type CodeData = {
-  title: string
-  description: string
+  showMap: boolean
   node: PolygonNodeType
   acceptCodeOutside: boolean
   code: string
@@ -34,8 +41,6 @@ type CoordData = {
 }
 
 type RadarData = {
-  title?: string
-  description?: string
   hints: Message[]
   node: CircleNodeType
 }

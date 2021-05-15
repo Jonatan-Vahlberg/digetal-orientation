@@ -6,7 +6,7 @@ interface UserMarkerProps {
 
 const UserMarker: React.FC<UserMarkerProps> = ({ coordinates }) => {
   return (
-    <Marker position={coordinates} icon={{ url: '/images/marker_small.svg' }} />
+    <Marker position={coordinates} icon={{ url: '/images/marker_xs.svg' }} />
   )
 }
 

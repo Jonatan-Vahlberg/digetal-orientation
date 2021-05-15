@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { GoogleMap, useJsApiLoader, Polygon } from '@react-google-maps/api'
 import { useLocationStore } from '~/helpers/stores'
 import { paperStyle } from '~/config/mapStyle'
@@ -36,12 +36,14 @@ const Map: React.FC<{
   }, [])
   const locationStore = useLocationStore()
   const { coordinates } = locationStore
-  const { lat, lng } = coordinates
+
+  const [initialCoords, setinitialCoords] = useState<Vertex>(coordinates)
+
   return (
     isLoaded && (
       <GoogleMap
-        mapContainerClassName="w-full h-full"
-        center={{ lat, lng }}
+        mapContainerClassName="flex-grow"
+        center={initialCoords}
         zoom={16}
         onLoad={onLoad}
         onUnmount={onUnmount}

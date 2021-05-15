@@ -8,7 +8,8 @@ import { caluclateDistance } from '~/helpers/functions'
 import Button from '../Button'
 import { useIntl } from 'react-intl'
 interface RadarStepComponentProps {
-  step?: Step
+  step: Step
+  radar: RadarData
   routeId: string
 }
 
@@ -36,6 +37,7 @@ interface RadarStepComponentProps {
 // }
 
 const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
+  radar,
   step,
   routeId,
 }) => {
@@ -43,17 +45,14 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
   const locationStore = useLocationStore()
   const userStore = useUserStore()
 
-  const stepdetails = step?.stepData as RadarData | undefined
   const [distance, setDistance] = useState<number>()
   const [movementState, setMovementState] = useState<
     'NUETRAL' | 'POSITIVE' | 'NEGATIVE'
   >('NUETRAL')
   useEffect(() => {
-    if (locationStore.coordinates && stepdetails) {
+    if (locationStore.coordinates) {
       setDistance((state) => {
-        const newDistance = locationStore.getDistance(
-          stepdetails.node.pointOfOrigin
-        )
+        const newDistance = locationStore.getDistance(radar.node.pointOfOrigin)
         setMovementState(
           state === newDistance
             ? 'NUETRAL'
@@ -69,7 +68,7 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
   textColor = movementState === 'POSITIVE' ? 'text-green-700' : textColor
   textColor = movementState === 'NEGATIVE' ? 'text-red-700' : textColor
   return (
-    <div className={'flex flex-col h-full items-center'}>
+    <div>
       <Radar distance={distance} />
       <p
         className={`text-2xl w-full text-center mt-3 font-semibold ${textColor}`}
@@ -86,7 +85,7 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
           onClick={() => {
             userStore.markStepAsCompleted(routeId, step, () => {})
           }}
-          disabled={stepdetails?.node.radius <= distance}
+          disabled={radar.node.radius <= distance}
         >
           {f({ id: 'step.next' }).toUpperCase()}
         </Button>

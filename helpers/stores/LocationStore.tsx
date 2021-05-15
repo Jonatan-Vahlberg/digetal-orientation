@@ -74,9 +74,16 @@ class LocationStore {
     this.coordinates = coordinates
   }
 
-  isInPolygon() {
+  refactorVerticies(verticies: Vertex[]) {
+    return verticies.map(({ lat, lng }) => [lat, lng])
+  }
+
+  isInPolygon(verticies: Vertex[]) {
     const { lat, lng } = this.coordinates
-    const isInside = classifyPoint(polygon, [lat, lng])
+    const isInside = classifyPoint(this.refactorVerticies(verticies), [
+      lat,
+      lng,
+    ])
     return isInside === -1 || isInside === 0
   }
 
