@@ -52,6 +52,9 @@ export default {
       code: {
         inputPlaceholder: 'Enter code',
         sendCode: 'Send code',
+        code_outside:
+          'The code can not be submitted outside of the designated area.',
+        code_incorrect: 'The code inputted does not match the designated code.',
       },
       next: 'Next',
       nodata: 'No data',
@@ -110,6 +113,9 @@ export default {
       code: {
         inputPlaceholder: 'Skriv in kod',
         sendCode: 'Skicka kod',
+        code_outside: 'Koden accepteras endast inuti det angivna området',
+        code_incorrect:
+          'Koden som du har skrivit in stämmer inte överäns var god att kolla stavning.',
       },
       next: 'Nästa',
       nodata: 'Ingen data',

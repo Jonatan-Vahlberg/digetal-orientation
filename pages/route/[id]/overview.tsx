@@ -21,11 +21,10 @@ const Route: NextPage<{ id: string; uid: string }> = ({ id, uid }) => {
   const { formatMessage: f, formatDate: fd, formatTime: ft } = useIntl()
   const routeStore = useRouteStore()
   const userStore = useUserStore()
-  const [routeState, setRouteState] = useState<
-    'NOT STARTED' | 'STARTED' | 'ENDED'
-  >('NOT STARTED')
+  const [routeState, setRouteState] =
+    useState<'NOT STARTED' | 'STARTED' | 'ENDED'>('NOT STARTED')
   const { currentRoute, loading } = routeStore
-
+  console.log('CURR', currentRoute)
   useEffect(() => {
     if (
       !routeStore.currentRoute ||
@@ -46,7 +45,7 @@ const Route: NextPage<{ id: string; uid: string }> = ({ id, uid }) => {
     if (userStore.user && currentRoute) {
       const userRoute = userStore.findRoute(currentRoute)
       if (userRoute) {
-        if (userRoute.ended) {
+        if (userRoute.finished) {
           setRouteState('ENDED')
           return
         }
@@ -66,6 +65,7 @@ const Route: NextPage<{ id: string; uid: string }> = ({ id, uid }) => {
       router.push(Endpoints.ROUTE_ACTIVE(id, currentRoute.title).href)
     } else {
       //TODO: RESET
+      userStore.resetRoute(id, onComplete)
     }
   }
   return (

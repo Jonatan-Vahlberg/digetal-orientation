@@ -23,10 +23,10 @@ interface ActiveRouteProps {
 const codeData: CodeData = {
   node: {
     vertices: [
-      { lat: 59.2851255144915, lng: 18.038505839647919 },
-      { lat: 59.28524470267394, lng: 18.03881437387636 },
-      { lat: 59.284876176943975, lng: 18.039348133470323 },
-      { lat: 59.284755617474765, lng: 18.039026268388536 },
+      { lat: 69.2851255144915, lng: 11.038505839647919 },
+      { lat: 69.28524470267394, lng: 19.03881437387636 },
+      { lat: 49.284876176943975, lng: 19.039348133470323 },
+      { lat: 49.284755617474765, lng: 11.039026268388536 },
     ],
     information: {
       title: 'Football field',
@@ -48,6 +48,11 @@ const TestingData: Step = {
     hA HA
     <a href="#">assaino</a>
     </div>`,
+    visibleWhenClose: `
+    <div>
+      Trash
+    </div>
+    `,
   },
 }
 
@@ -82,6 +87,10 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
         currentStep.radar.node.radius
       )
     } else if (currentStep?.code) {
+      console.log(
+        'isIn',
+        locationStore.isInPolygon(currentStep.code.node.vertices)
+      )
       return locationStore.isInPolygon(currentStep.code.node.vertices)
     }
     return false
@@ -106,13 +115,19 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
 
   useEffect(() => {
     if (currentRoute && user) {
-      const [isCleared, nextStepIndex] = userStore.getNextStep(id)
+      const [isCleared, nextStepIndex] = userStore.getNextStep(
+        id,
+        currentRoute.steps.length
+      )
+      console.log('IS NEXT', isCleared, nextStepIndex)
       if (!isCleared) {
         const step = routeStore.getStep(nextStepIndex)
-        setCurrentStep(TestingData)
+        setCurrentStep(step)
       } else {
-        const { href, as } = Endpoints.ROUTE_OVERVIEW(id)
-        router.push(href, as)
+        userStore.clearRoute(id, () => {
+          const { href, as } = Endpoints.ROUTE_COMPLETED(id)
+          router.push(href, as)
+        })
       }
     }
   }, [currentRoute, user])
@@ -172,27 +187,6 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
             />
           )}
         </div>
-        // (() => {
-        //   if (currentStep) {
-        //     if (currentStep.radar)
-        //       return (
-        //         <RadarStepComponent
-        //           radar={currentStep.radar}
-        //           step={currentStep}
-        //           routeId={id}
-        //         />
-        //       )
-        //     else
-        //       return (
-        //         <CodeStepComponent
-        //           step={currentStep}
-        //           codeData={currentStep.code}
-        //           routeId={id}
-        //         />
-        //       )
-        //   }
-        //   return null
-        // })()
       )}
     </Layout>
   )

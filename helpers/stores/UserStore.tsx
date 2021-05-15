@@ -61,15 +61,14 @@ class UserStore {
     this.updateUser({ routes }, onComplete)
   }
 
-  getNextStep(id: string): [boolean, number] {
+  getNextStep(id: string, length: number): [boolean, number] {
     const route = this.user?.routes.find(({ uuid }) => id === uuid)
     let fullClear = false
     if (!route || !route.stepsClear || route.stepsClear?.length === 0) {
       return [fullClear, 0]
     }
-    console.log(route.stepsClear)
     const highestClearedStep = Math.max(...route.stepsClear)
-    if (highestClearedStep >= route.stepsClear.length) {
+    if (highestClearedStep >= length - 1) {
       fullClear = true
     }
     return [fullClear, highestClearedStep + 1]
@@ -77,10 +76,12 @@ class UserStore {
 
   markStepAsCompleted(routeId: string, step: Step, onComplete: () => void) {
     const route = this.user?.routes.find(({ uuid }) => routeId === uuid)
+    console.log('USER', this.user)
     const stepsClear = route.stepsClear ?? []
     stepsClear.push(step.stepIndex)
     this.updateRoute({ ...route, stepsClear }, onComplete)
   }
+
   async updateRoute(route: UserRoute, onComplete: () => void) {
     const routeIndex = this.user?.routes.findIndex(
       (oldRoute) => oldRoute.uuid === route.uuid
@@ -88,6 +89,19 @@ class UserStore {
     let routes = [...this.user?.routes]
     routes[routeIndex] = route
     this.updateUser({ routes }, onComplete)
+  }
+
+  clearRoute(routeId: string, onComplete: VoidFunction = () => {}) {
+    const route = this.user?.routes.find(({ uuid }) => routeId === uuid)
+    this.updateRoute({ ...route, finished: true }, onComplete)
+  }
+
+  resetRoute(routeId: string, onComplete: VoidFunction = () => {}) {
+    const route = this.user?.routes.find(({ uuid }) => routeId === uuid)
+    route.finished = false
+    route.stepsClear = []
+    route.started = new Date().toString()
+    this.updateRoute(route, onComplete)
   }
 
   findRoute(currentRoute: FullRoute): UserRoute | undefined {

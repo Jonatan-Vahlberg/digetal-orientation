@@ -39,48 +39,50 @@ const LoginPage: NextPage<{}> = () => {
     // console.log('COORDS', locationStore.coordinates)
   }, [locationStore.coordinates])
   return (
-    <Layout>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={loginSchema}
-        onSubmit={(values) => {
-          authStore.signInUser(values, (user) => {
-            userStore.setUser(user)
-            router.push(Endpoints.HOME)
-          })
-        }}
-      >
-        {({ touched, errors }) => (
-          <Form>
-            <Input
-              name="email"
-              type="email"
-              placeholder={capitalize(f({ id: 'login.email' }))}
-              containerClassName="mb-3"
-              error={errors.email}
-              touched={touched.email}
-            />
-            <Input
-              name="password"
-              type="password"
-              error={errors.email}
-              touched={touched.email}
-              placeholder={capitalize(f({ id: 'login.password' }))}
-            />
-            <Button type="submit" className="mt-20 mb-3">
-              {f({ id: 'login.login' }).toUpperCase()}
-            </Button>
-            <Link {...endpoints.REGISTER}>
-              <StyledLink>{f({ id: 'login.or.register' })}</StyledLink>
-            </Link>
-            {/* <p className="text-white">YOU ARE INSIDE {locationStore.isInPolygon() ? 'TRUE' : 'FALSE'}</p>
+    <Layout padded>
+      <div className="flex flex-col items-center">
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={loginSchema}
+          onSubmit={(values) => {
+            authStore.signInUser(values, (user) => {
+              userStore.setUser(user)
+              router.push(Endpoints.HOME)
+            })
+          }}
+        >
+          {({ touched, errors }) => (
+            <Form>
+              <Input
+                name="email"
+                type="email"
+                placeholder={capitalize(f({ id: 'login.email' }))}
+                containerClassName="mb-3"
+                error={errors.email}
+                touched={touched.email}
+              />
+              <Input
+                name="password"
+                type="password"
+                error={errors.email}
+                touched={touched.email}
+                placeholder={capitalize(f({ id: 'login.password' }))}
+              />
+              <Button type="submit" className="mt-20 mb-3">
+                {f({ id: 'login.login' }).toUpperCase()}
+              </Button>
+              <Link {...endpoints.REGISTER}>
+                <StyledLink>{f({ id: 'login.or.register' })}</StyledLink>
+              </Link>
+              {/* <p className="text-white">YOU ARE INSIDE {locationStore.isInPolygon() ? 'TRUE' : 'FALSE'}</p>
             <p className="text-white">{locationStore.coordinates.join(' ')}</p> */}
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </Layout>
   )
 }

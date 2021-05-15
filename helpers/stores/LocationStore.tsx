@@ -84,6 +84,7 @@ class LocationStore {
       lat,
       lng,
     ])
+    console.log('POINT', isInside)
     return isInside === -1 || isInside === 0
   }
 

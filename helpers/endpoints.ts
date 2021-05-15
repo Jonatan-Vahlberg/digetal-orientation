@@ -19,6 +19,10 @@ const Endpoints = {
     href: `/route/${routeId}/active?title=${title}`,
     as: `/route/${routeId}/active?title=${title}`,
   }),
+  ROUTE_COMPLETED: (routeId: string) => ({
+    href: `/route/${routeId}/completed`,
+    as: `/route/${routeId}/completed`,
+  }),
 }
 
 export default Endpoints

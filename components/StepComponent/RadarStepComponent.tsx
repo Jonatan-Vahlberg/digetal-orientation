@@ -46,9 +46,8 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
   const userStore = useUserStore()
 
   const [distance, setDistance] = useState<number>()
-  const [movementState, setMovementState] = useState<
-    'NUETRAL' | 'POSITIVE' | 'NEGATIVE'
-  >('NUETRAL')
+  const [movementState, setMovementState] =
+    useState<'NUETRAL' | 'POSITIVE' | 'NEGATIVE'>('NUETRAL')
   useEffect(() => {
     if (locationStore.coordinates) {
       setDistance((state) => {
