@@ -63,14 +63,14 @@ const RadarStepComponent: React.FC<RadarStepComponentProps> = ({
       })
     }
   }, [locationStore.coordinates])
-  let textColor = 'text-white'
+  let textColor = ''
   textColor = movementState === 'POSITIVE' ? 'text-green-700' : textColor
   textColor = movementState === 'NEGATIVE' ? 'text-red-700' : textColor
   return (
     <div>
       <Radar distance={distance} />
       <p
-        className={`text-2xl w-full text-center mt-3 font-semibold ${textColor}`}
+        className={`text-2xl w-full text-center mt-3 font-semibold mb-3 ${textColor}`}
       >
         {distance ? `${distance} M` : f({ id: 'step.nodata' })}
         <span>

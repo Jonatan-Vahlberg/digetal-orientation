@@ -9,10 +9,9 @@ export const registerSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, 'errors.password.valid')
     .required('errors.password.required'),
-  confirm: Yup.string().oneOf(
-    [Yup.ref('password'), null],
-    'errors.password.confirm'
-  ),
+  confirm: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'errors.password.confirm')
+    .required('errors.password.required'),
 })
 
 export const loginSchema = Yup.object().shape({

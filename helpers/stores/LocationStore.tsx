@@ -22,14 +22,6 @@ class LocationStore {
     console.log(typeof window)
     if (typeof window !== 'undefined' && !this.watchId) {
       if ('geolocation' in window.navigator) {
-        // this.watchId = window.navigator.geolocation.watchPosition(
-        //   ({ coords: { latitude: lat, longitude: lng } }) => {
-        //     this.coordinates = {
-        //       lat,
-        //       lng,
-        //     }
-        //   }
-        // )
         window.navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude: lat, longitude: lng } }) => {
             this.updateCoordinates(lat, lng)
@@ -39,17 +31,31 @@ class LocationStore {
             enableHighAccuracy: true,
           }
         )
-        this.watchId = setInterval(() => {
-          window.navigator.geolocation.getCurrentPosition(
-            ({ coords: { latitude: lat, longitude: lng } }) => {
-              this.updateCoordinates(lat, lng)
-            },
-            (error) => console.warn('ERROR', error),
-            {
-              enableHighAccuracy: true,
-            }
-          )
-        }, 5000)
+        this.watchId = navigator.geolocation.watchPosition(
+          ({ coords: { latitude: lat, longitude: lng } }) => {
+            console.log('Got Pos', lat)
+            this.updateCoordinates(lat, lng)
+          },
+          (error) => {
+            console.warn('LOCATION ERROR', error)
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 0,
+            maximumAge: 0,
+          }
+        )
+        // this.watchId = setInterval(() => {
+        //   window.navigator.geolocation.getCurrentPosition(
+        //     ({ coords: { latitude: lat, longitude: lng } }) => {
+        //       this.updateCoordinates(lat, lng)
+        //     },
+        //     (error) => console.warn('ERROR', error),
+        //     {
+        //       enableHighAccuracy: true,
+        //     }
+        //   )
+        // }, 5000)
       }
     }
   }
@@ -65,7 +71,7 @@ class LocationStore {
     if (typeof window !== 'undefined' && this.watchId) {
       if ('geolocation' in window.navigator) {
         //@ts-ignore
-        clearInterval(this.watchId)
+        window.navigator.geolocation.clearWatch(this.watchId)
       }
     }
   }

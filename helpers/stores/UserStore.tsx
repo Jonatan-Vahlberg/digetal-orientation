@@ -76,8 +76,7 @@ class UserStore {
 
   markStepAsCompleted(routeId: string, step: Step, onComplete: () => void) {
     const route = this.user?.routes.find(({ uuid }) => routeId === uuid)
-    console.log('USER', this.user)
-    const stepsClear = route.stepsClear ?? []
+    const stepsClear = route?.stepsClear ?? []
     stepsClear.push(step.stepIndex)
     this.updateRoute({ ...route, stepsClear }, onComplete)
   }
@@ -98,10 +97,12 @@ class UserStore {
 
   resetRoute(routeId: string, onComplete: VoidFunction = () => {}) {
     const route = this.user?.routes.find(({ uuid }) => routeId === uuid)
-    route.finished = false
-    route.stepsClear = []
-    route.started = new Date().toString()
-    this.updateRoute(route, onComplete)
+    if (route) {
+      route.finished = false
+      route.stepsClear = []
+      route.started = new Date().toString()
+      this.updateRoute(route, onComplete)
+    }
   }
 
   findRoute(currentRoute: FullRoute): UserRoute | undefined {

@@ -34,6 +34,7 @@ export default {
         valid: 'The password has to contain at least 8 chars',
         confirm: 'Passwords must match',
       },
+      login: "Something wen't wrong with the login process",
     },
     route: {
       detail: {
@@ -44,8 +45,19 @@ export default {
         buttonStates: {
           unstarted: 'start',
           started: 'continue',
-          done: 'reset',
+          ended: 'reset',
         },
+      },
+      completed: {
+        title: 'Nicely done',
+        message: `
+          Hi thank you for joining and testing this alpha version of Digital Orientation.<br><br>
+
+          Currently the app lacks the desired depth and all feedback is appreciated.<br><br>
+
+          Thank you again // Jonatan Vahlberg
+        `,
+        go_back: 'Return',
       },
     },
     step: {
@@ -95,6 +107,7 @@ export default {
         valid: 'Lösenordet måste vara minst 8 tecken långt',
         confirm: 'Lösenorden måste matcha',
       },
+      login: 'Något gick fel med inloggningen vänligen försök igen.',
     },
     route: {
       detail: {
@@ -105,8 +118,19 @@ export default {
         buttonStates: {
           unstarted: 'starta',
           started: 'Fortsätt',
-          done: 'Återställ',
+          ended: 'Återställ',
         },
+      },
+      completed: {
+        title: 'Bra Jobbat',
+        message: `
+          Hejsan tack så mycket för att du deltog i detta test av Digetal orientering systemet.<br><br> 
+          
+          I dagsläget sakar sidan mycket av den funktionalitet som jag skulle vilja implementera men den grundläggande tanken bakom sidan är detsama därför uppskatas all feedback som ni har.<br><br>
+
+          Med Scouthälsningar <strong>Jonatan Vahlberg</strong>
+        `,
+        go_back: 'Gå Tillbaka',
       },
     },
     step: {

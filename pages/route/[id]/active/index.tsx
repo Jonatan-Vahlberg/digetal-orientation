@@ -20,51 +20,51 @@ interface ActiveRouteProps {
   uid: string
 }
 
-const codeData: CodeData = {
-  node: {
-    vertices: [
-      { lat: 69.2851255144915, lng: 11.038505839647919 },
-      { lat: 69.28524470267394, lng: 19.03881437387636 },
-      { lat: 49.284876176943975, lng: 19.039348133470323 },
-      { lat: 49.284755617474765, lng: 11.039026268388536 },
-    ],
-    information: {
-      title: 'Football field',
-    },
-  },
-  acceptCodeOutside: true,
-  code: 'testing',
-  showMap: true,
-}
+// const codeData: CodeData = {
+//   node: {
+//     vertices: [
+//       { lat: 69.2851255144915, lng: 11.038505839647919 },
+//       { lat: 69.28524470267394, lng: 19.03881437387636 },
+//       { lat: 49.284876176943975, lng: 19.039348133470323 },
+//       { lat: 49.284755617474765, lng: 11.039026268388536 },
+//     ],
+//     information: {
+//       title: 'Football field',
+//     },
+//   },
+//   acceptCodeOutside: true,
+//   code: 'testing',
+//   showMap: true,
+// }
 
-const TestingData: Step = {
-  stepIndex: 0,
-  title: 'TEsting',
-  description: 'TESTING',
-  code: codeData,
-  markup: {
-    visibleAlways: `
-    <div>
-    hA HA
-    <a href="#">assaino</a>
-    </div>`,
-    visibleWhenClose: `
-    <div>
-      Trash
-    </div>
-    `,
-  },
-}
+// const TestingData: Step = {
+//   stepIndex: 0,
+//   title: 'TEsting',
+//   description: 'TESTING',
+//   code: codeData,
+//   markup: {
+//     visibleAlways: `
+//     <div>
+//     hA HA
+//     <a href="#">assaino</a>
+//     </div>`,
+//     visibleWhenClose: `
+//     <div>
+//       Trash
+//     </div>
+//     `,
+//   },
+// }
 
-const vertex1: Vertex = {
-  lat: 59.285418,
-  lng: 18.03917,
-}
+// const vertex1: Vertex = {
+//   lat: 59.285418,
+//   lng: 18.03917,
+// }
 
-const vertex2: Vertex = {
-  lat: 59.285446,
-  lng: 18.039138,
-}
+// const vertex2: Vertex = {
+//   lat: 59.285446,
+//   lng: 18.039138,
+// }
 
 const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
   const { formatMessage: f } = useIntl()
@@ -105,7 +105,6 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
           () => {}
         )
       }
-      console.log()
       if (!user) {
         userStore.getUser(props.uid)
       }

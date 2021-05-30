@@ -58,7 +58,7 @@ class AuthStore {
   signInUser(
     details: { email: string; password: string },
     onComplete: (user: User) => void,
-    onError?: (error: any) => {}
+    onError?: (error: any) => void
   ) {
     firebase
       .auth()
@@ -84,6 +84,11 @@ class AuthStore {
               onError(error)
             }
           })
+      })
+      .catch((error) => {
+        if (onError) {
+          onError(error)
+        }
       })
   }
 

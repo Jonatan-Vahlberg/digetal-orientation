@@ -17,7 +17,7 @@ const Radar: React.FC<{ distance: number }> = ({ distance = 300 }) => {
     }
   }, [distance])
   return (
-    <div className="border-white border-8 w-4/5">
+    <div className="border-green-800 mx-auto my-3 border-8 w-4/5">
       <div
         style={{ paddingTop: '100%' }}
         className=" bg-black relative overflow-hidden"

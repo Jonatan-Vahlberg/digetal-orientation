@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl'
 import { capitalize, capitalizeAll } from '../helpers/functions'
 import { observer, Observer } from 'mobx-react-lite'
 import { useAuthStore, useLocationStore, useUserStore } from '../helpers/stores'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import endpoints from '../helpers/endpoints'
 import StyledLink from '../components/Link/StyledLink'
@@ -16,6 +16,7 @@ import Firebase from '../config/firebase'
 import { rerouteOnAuthorized } from '../helpers/validation'
 import { useRouter } from 'next/router'
 import Endpoints from '../helpers/endpoints'
+import ErrorText from '~/components/Input/ErrorText'
 
 const LoginPage: NextPage<{}> = () => {
   const { formatMessage: f } = useIntl()
@@ -23,21 +24,8 @@ const LoginPage: NextPage<{}> = () => {
   const userStore = useUserStore()
   const locationStore = useLocationStore()
   const authStore = useAuthStore()
-
-  // useEffect(() => {
-  //   if (navigator) {
-  //     if ('geolocation' in navigator) {
-  //       navigator.geolocation.watchPosition((position) => {
-  //         const { latitude, longitude } = position.coords
-  //         locationStore.setCoordinates([latitude, longitude])
-  //       })
-  //     }
-  //   }
-  // }, [])
-
-  useEffect(() => {
-    // console.log('COORDS', locationStore.coordinates)
-  }, [locationStore.coordinates])
+  const [submitalError, setSubmitalError] = useState<string>()
+  console.log('SUBMITTAL', submitalError)
   return (
     <Layout padded>
       <div className="flex flex-col items-center">
@@ -48,10 +36,19 @@ const LoginPage: NextPage<{}> = () => {
           }}
           validationSchema={loginSchema}
           onSubmit={(values) => {
-            authStore.signInUser(values, (user) => {
-              userStore.setUser(user)
-              router.push(Endpoints.HOME)
-            })
+            setSubmitalError(undefined)
+
+            authStore.signInUser(
+              values,
+              (user) => {
+                userStore.setUser(user)
+                router.push(Endpoints.HOME)
+              },
+              () => {
+                console.log('AHH')
+                setSubmitalError('errors.login')
+              }
+            )
           }}
         >
           {({ touched, errors }) => (
@@ -67,10 +64,11 @@ const LoginPage: NextPage<{}> = () => {
               <Input
                 name="password"
                 type="password"
-                error={errors.email}
-                touched={touched.email}
+                error={errors.password}
+                touched={touched.password}
                 placeholder={capitalize(f({ id: 'login.password' }))}
               />
+              <ErrorText touched error={submitalError} />
               <Button type="submit" className="mt-20 mb-3">
                 {f({ id: 'login.login' }).toUpperCase()}
               </Button>

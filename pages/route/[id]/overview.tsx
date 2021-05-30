@@ -44,6 +44,8 @@ const Route: NextPage<{ id: string; uid: string }> = ({ id, uid }) => {
   useEffect(() => {
     if (userStore.user && currentRoute) {
       const userRoute = userStore.findRoute(currentRoute)
+      console.log('USER', userRoute)
+      console.log('CURRENT ROUTE', currentRoute)
       if (userRoute) {
         if (userRoute.finished) {
           setRouteState('ENDED')
