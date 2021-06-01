@@ -79,6 +79,7 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
   const { currentRoute, loading: routeIsLoading } = routeStore
 
   const [currentStep, setCurrentStep] = useState<Step>()
+  const [cleared, setCleared] = useState<boolean>(false)
 
   const isWithinRange = () => {
     if (currentStep?.radar) {
@@ -119,17 +120,25 @@ const ActiveRoute: NextPage<ActiveRouteProps> = (props) => {
         currentRoute.steps.length
       )
       console.log('IS NEXT', isCleared, nextStepIndex)
+      if (isCleared && !cleared) {
+        setCleared(true)
+        return
+      }
       if (!isCleared) {
         const step = routeStore.getStep(nextStepIndex)
         setCurrentStep(step)
-      } else {
-        userStore.clearRoute(id, () => {
-          const { href, as } = Endpoints.ROUTE_COMPLETED(id)
-          router.push(href, as)
-        })
       }
     }
   }, [currentRoute, user])
+
+  useEffect(() => {
+    if (cleared) {
+      userStore.clearRoute(id, () => {
+        const { href, as } = Endpoints.ROUTE_COMPLETED(id)
+        router.push(href, as)
+      })
+    }
+  }, [cleared])
 
   useEffect(() => {
     return () => {
