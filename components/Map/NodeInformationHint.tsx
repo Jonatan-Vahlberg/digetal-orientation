@@ -17,10 +17,11 @@ const NodeInformationHint: React.FC<NodeInformationHintProps> = ({
   setOpenHints,
 }) => {
   const hintIsOpen = openHints.some((hintIndex) => hintIndex === index)
+  console.log('HINTS', openHints)
   const isHintLocked = (() => {
     if (index === 0) return false
     if (openHints.length === 0) return true
-    return openHints.some((hintIndex) => hintIndex !== index - 1)
+    return openHints[index - 1] !== index - 1
   })()
   return (
     <div className="mb-2">
