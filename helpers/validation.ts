@@ -5,6 +5,7 @@ import nookies from 'nookies'
 export const rerouteOnUnauthorized = async (ctx: NextPageContext) => {
   try {
     const cookies = nookies.get(ctx)
+    console.log('COOKIE', cookies)
     const token = await verifyIdToken(cookies.FB_TOKEN)
     console.log('TOKEN GOT UNAUTH', token.uid)
     return {
