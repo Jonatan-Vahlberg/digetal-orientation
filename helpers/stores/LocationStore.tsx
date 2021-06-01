@@ -41,7 +41,6 @@ class LocationStore {
           },
           {
             enableHighAccuracy: true,
-            timeout: 0,
             maximumAge: 0,
           }
         )
